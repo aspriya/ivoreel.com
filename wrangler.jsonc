@@ -1,0 +1,73 @@
+/**
+ * Cloudflare Workers config for the OpenNext deployment of the Next.js app.
+ *
+ * Before running `wrangler dev` / `deploy`, create these resources and paste
+ * their IDs below:
+ *   wrangler d1 create ivoreel-db         -> database_id
+ *   wrangler r2 bucket create ivoreel
+ *   wrangler kv namespace create JOB_STATUS -> id
+ *   wrangler kv namespace create RATE_LIMIT -> id
+ *
+ * Keep the compatibility_date reasonably recent; `nodejs_compat` is required
+ * for the OpenNext adapter.
+ */
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ivoreel",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2025-03-01",
+  "compatibility_flags": ["nodejs_compat"],
+
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+
+  "limits": {
+    "cpu_ms": 30000
+  },
+
+  "observability": {
+    "enabled": true
+  },
+
+  "r2_buckets": [
+    {
+      "binding": "REEL_BUCKET",
+      "bucket_name": "ivoreel",
+      "preview_bucket_name": "ivoreel-preview"
+    }
+  ],
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "ivoreel-db",
+      "database_id": "TODO_PASTE_D1_DATABASE_ID",
+      "migrations_dir": "migrations"
+    }
+  ],
+
+  "kv_namespaces": [
+    {
+      "binding": "JOB_STATUS",
+      "id": "TODO_PASTE_KV_NAMESPACE_ID"
+    },
+    {
+      "binding": "RATE_LIMIT",
+      "id": "TODO_PASTE_RATE_LIMIT_KV_ID"
+    }
+  ],
+
+  "workflows": [
+    {
+      "name": "reel-workflow",
+      "binding": "REEL_FLOW",
+      "class_name": "ReelWorkflow"
+    }
+  ],
+
+  "vars": {
+    "CF_WORKER_URL": "http://localhost:8787"
+  }
+}

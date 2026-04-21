@@ -1,0 +1,59 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build output
+.next/
+out/
+.open-next/
+dist/
+build/
+
+# Env & secrets
+.env
+.env.local
+.env.*.local
+.dev.vars
+.dev.vars.*
+!.env.example
+
+# Wrangler
+.wrangler/
+wrangler.toml.bak
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.idea/
+.vscode/*
+!.vscode/settings.json.example
+!.vscode/extensions.json
+
+# Testing
+coverage/
+.nyc_output/
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Remotion
+remotion/out/
+
+# Trigger.dev
+.trigger/
+
+# Temp
+*.tmp
+.cache/

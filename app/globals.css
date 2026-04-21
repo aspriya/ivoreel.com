@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground: 0 0% 0%;
+  --background: 0 0% 100%;
+}
+
+.dark {
+  --foreground: 0 0% 100%;
+  --background: 0 0% 0%;
+}
+
+body {
+  color: hsl(var(--foreground));
+  background: hsl(var(--background));
+}
