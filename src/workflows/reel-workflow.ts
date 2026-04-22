@@ -87,7 +87,7 @@ export class ReelWorkflow extends WorkflowEntrypoint<CloudflareEnv, ReelJobParam
           throw new Error(`video download failed: ${res.status}`);
         }
         const key = `jobs/${jobId}/background.mp4`;
-        await this.env.REEL_BUCKET.put(key, res.body);
+        await this.env.REEL_BUCKET.put(key, await res.arrayBuffer());
         await this.env.JOB_STATUS.put(
           jobId,
           JSON.stringify({ stage: "video_done", progress: 75 }),
@@ -135,10 +135,11 @@ export class ReelWorkflow extends WorkflowEntrypoint<CloudflareEnv, ReelJobParam
       });
 
       // Step 5 — Wait for Trigger.dev webhook to signal completion
-      const { finalKey } = await step.waitForEvent<{ finalKey: string }>(
+      const completionEvent = await step.waitForEvent<{ finalKey: string }>(
         "composition-complete",
         { type: "composition-complete", timeout: "15 minutes" },
       );
+      const finalKey = completionEvent.payload.finalKey;
 
       await step.do("mark-complete", async () => {
         await this.env.DB.prepare(

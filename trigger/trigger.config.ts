@@ -5,6 +5,7 @@ export default defineConfig({
   project: "ivoreel", // change if your Trigger.dev project slug differs
   runtime: "node",
   logLevel: "log",
+  maxDuration: 600,
   // Ensure Chromium is available for Remotion
   build: {
     extensions: [puppeteer()],

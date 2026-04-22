@@ -60,7 +60,7 @@ export const ReelComposition: React.FC<ReelProps> = ({
     combineTokensWithinMilliseconds: 500,
   });
   const currentPage = pages.find(
-    (p) => p.startMs <= currentMs && p.endMs > currentMs,
+    (p) => p.startMs <= currentMs && p.startMs + p.durationMs > currentMs,
   );
 
   return (
@@ -90,25 +90,29 @@ export const ReelComposition: React.FC<ReelProps> = ({
               backgroundColor: captionStyle.backgroundColor,
             }}
           >
-            {currentPage.tokens.map((token, i) => (
-              <span
-                key={i}
-                style={{
-                  fontSize: captionStyle.fontSize,
-                  fontFamily: captionStyle.fontFamily,
-                  fontWeight: 800,
-                  color: token.isActive
-                    ? captionStyle.activeColor
-                    : captionStyle.inactiveColor,
-                  marginRight: 8,
-                  display: "inline-block",
-                  transform: token.isActive ? "scale(1.15)" : "scale(1)",
-                  transition: "transform 0.1s",
-                }}
-              >
-                {token.text}
-              </span>
-            ))}
+            {currentPage.tokens.map((token, i) => {
+              const isActive =
+                token.fromMs <= currentMs && token.toMs > currentMs;
+              return (
+                <span
+                  key={i}
+                  style={{
+                    fontSize: captionStyle.fontSize,
+                    fontFamily: captionStyle.fontFamily,
+                    fontWeight: 800,
+                    color: isActive
+                      ? captionStyle.activeColor
+                      : captionStyle.inactiveColor,
+                    marginRight: 8,
+                    display: "inline-block",
+                    transform: isActive ? "scale(1.15)" : "scale(1)",
+                    transition: "transform 0.1s",
+                  }}
+                >
+                  {token.text}
+                </span>
+              );
+            })}
           </div>
         </AbsoluteFill>
       )}

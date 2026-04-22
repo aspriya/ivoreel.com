@@ -24,7 +24,7 @@ export const RemotionRoot: React.FC = () => {
     <>
       <Composition
         id="ReelComposition"
-        component={ReelComposition}
+        component={ReelComposition as unknown as React.ComponentType<Record<string, unknown>>}
         durationInFrames={900}
         fps={30}
         width={1080}
